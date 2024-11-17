@@ -10,7 +10,7 @@ def get_users(db: Session):
     return db.query(User).all()
 
 def create_user(db: Session, user: UserCreate):
-    db_user = User(name=user.name, email=user.email, is_active=True)
+    db_user = User(name=user.name, email=user.email, is_active=True, password=user.password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -33,3 +33,6 @@ def delete_task(db: Session, task_id: int):
     db.delete(task)
     db.commit()
     return {"message": "Task deleted"}
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()

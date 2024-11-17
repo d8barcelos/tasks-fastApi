@@ -8,7 +8,7 @@ class User(Base):
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     is_active = Column(Boolean, default=True)
-
+    password = Column(String)
     tasks = relationship("Task", back_populates="owner")
 
 class Task(Base):
