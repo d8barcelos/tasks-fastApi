@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from models import User, Task
 from schemas import UserCreate, TaskCreate
@@ -24,3 +25,11 @@ def create_task(db: Session, task: TaskCreate, user_id: int):
     db.commit()
     db.refresh(db_task)
     return db_task
+
+def delete_task(db: Session, task_id: int):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    db.delete(task)
+    db.commit()
+    return {"message": "Task deleted"}
